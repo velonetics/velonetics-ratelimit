@@ -11,7 +11,7 @@ import (
 	"math/rand"
 	"time"
 
-	veloneticsrate "github.com/pucora/velonetics-ratelimit/v3"
+	pucorarate "github.com/pucora/pucora-ratelimit/v3"
 	"github.com/pucora/lura/v2/config"
 )
 
@@ -99,7 +99,7 @@ func ConfigGetter(e config.ExtraConfig) (Config, error) {
 		cfg.Key = fmt.Sprintf("%v", v)
 	}
 
-	cfg.TTL = veloneticsrate.DataTTL
+	cfg.TTL = pucorarate.DataTTL
 	if v, ok := tmp["every"]; ok {
 		every, err := time.ParseDuration(fmt.Sprintf("%v", v))
 		if err != nil || every < time.Second {
@@ -115,7 +115,7 @@ func ConfigGetter(e config.ExtraConfig) (Config, error) {
 			cfg.TTL = time.Duration(int64((1 + 0.25*rand.Float64()) * float64(every))) // skipcq: GSC-G404
 		}
 	}
-	cfg.NumShards = veloneticsrate.DefaultShards
+	cfg.NumShards = pucorarate.DefaultShards
 	if v, ok := tmp["num_shards"]; ok {
 		switch val := v.(type) {
 		case int64:

@@ -1,4 +1,4 @@
-package veloneticsrate
+package pucorarate
 
 const (
 	offset64 uint64 = 14695981039346656037

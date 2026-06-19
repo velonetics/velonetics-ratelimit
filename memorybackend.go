@@ -1,5 +1,5 @@
-// veloneticsrate contains a collection of curated rate limit adaptors for the Pucora framework
-package veloneticsrate
+// pucorarate contains a collection of curated rate limit adaptors for the Pucora framework
+package pucorarate
 
 import (
 	"context"

@@ -1,4 +1,4 @@
-package veloneticsrate
+package pucorarate
 
 import (
 	"testing"

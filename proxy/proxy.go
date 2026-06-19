@@ -6,7 +6,7 @@ Sample backend extra config
 	...
 	"extra_config": {
 		...
-		"github.com/pucora/velonetics-ratelimit/rate/proxy": {
+		"github.com/pucora/pucora-ratelimit/rate/proxy": {
 			"max_rate": 100,
 			"capacity": 100
 		},
@@ -16,7 +16,7 @@ Sample backend extra config
 
 Adding the middleware to your proxy stack
 
-	import ratelimitproxy "github.com/pucora/velonetics-ratelimit/v3/proxy"
+	import ratelimitproxy "github.com/pucora/pucora-ratelimit/v3/proxy"
 
 	...
 
@@ -43,7 +43,7 @@ import (
 	"github.com/pucora/lura/v2/logging"
 	"github.com/pucora/lura/v2/proxy"
 
-	veloneticsrate "github.com/pucora/velonetics-ratelimit/v3"
+	pucorarate "github.com/pucora/pucora-ratelimit/v3"
 )
 
 // Namespace is the key to use to store and access the custom config data for the proxy
@@ -84,7 +84,7 @@ func NewMiddleware(logger logging.Logger, remote *config.Backend) proxy.Middlewa
 		}
 	}
 
-	tb := veloneticsrate.NewTokenBucket(cfg.MaxRate, cfg.Capacity)
+	tb := pucorarate.NewTokenBucket(cfg.MaxRate, cfg.Capacity)
 	logger.Debug(logPrefix, "Enabling the rate limiter")
 	return func(next ...proxy.Proxy) proxy.Proxy {
 		if len(next) > 1 {
@@ -92,7 +92,7 @@ func NewMiddleware(logger logging.Logger, remote *config.Backend) proxy.Middlewa
 		}
 		return func(ctx context.Context, request *proxy.Request) (*proxy.Response, error) {
 			if !tb.Allow() {
-				return nil, veloneticsrate.ErrLimited
+				return nil, pucorarate.ErrLimited
 			}
 			return next[0](ctx, request)
 		}

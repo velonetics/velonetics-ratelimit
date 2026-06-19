@@ -9,18 +9,18 @@ import (
 	"github.com/pucora/lura/v2/config"
 	"github.com/pucora/lura/v2/logging"
 	"github.com/pucora/lura/v2/proxy"
-	veloneticsgin "github.com/pucora/lura/v2/router/gin"
+	pucoragin "github.com/pucora/lura/v2/router/gin"
 
-	veloneticsrate "github.com/pucora/velonetics-ratelimit/v3"
-	"github.com/pucora/velonetics-ratelimit/v3/router"
+	pucorarate "github.com/pucora/pucora-ratelimit/v3"
+	"github.com/pucora/pucora-ratelimit/v3/router"
 )
 
 // HandlerFactory is the out-of-the-box basic ratelimit handler factory using the default pucora endpoint
 // handler for the gin router
-var HandlerFactory = NewRateLimiterMw(logging.NoOp, veloneticsgin.EndpointHandler)
+var HandlerFactory = NewRateLimiterMw(logging.NoOp, pucoragin.EndpointHandler)
 
 // NewRateLimiterMw builds a rate limiting wrapper over the received handler factory.
-func NewRateLimiterMw(logger logging.Logger, next veloneticsgin.HandlerFactory) veloneticsgin.HandlerFactory {
+func NewRateLimiterMw(logger logging.Logger, next pucoragin.HandlerFactory) pucoragin.HandlerFactory {
 	return func(remote *config.EndpointConfig, p proxy.Proxy) gin.HandlerFunc {
 		logPrefix := "[ENDPOINT: " + remote.Endpoint + "][Ratelimit]"
 		handlerFunc := next(remote, p)
@@ -60,7 +60,7 @@ func applyGlobalRateLimit(logger logging.Logger, logPrefix string, cfg router.Co
 	}
 
 	logger.Debug(logPrefix, fmt.Sprintf("Rate limit enabled. MaxRate: %f, Capacity: %d", cfg.MaxRate, cfg.Capacity))
-	return NewEndpointRateLimiterMw(veloneticsrate.NewTokenBucket(cfg.MaxRate, cfg.Capacity))(handler)
+	return NewEndpointRateLimiterMw(pucorarate.NewTokenBucket(cfg.MaxRate, cfg.Capacity))(handler)
 }
 
 func applyClientRateLimit(logger logging.Logger, logPrefix string, cfg router.Config,
@@ -94,11 +94,11 @@ func applyClientRateLimit(logger logging.Logger, logPrefix string, cfg router.Co
 type EndpointMw func(gin.HandlerFunc) gin.HandlerFunc
 
 // NewEndpointRateLimiterMw creates a simple ratelimiter for a given handlerFunc
-func NewEndpointRateLimiterMw(tb *veloneticsrate.TokenBucket) EndpointMw {
+func NewEndpointRateLimiterMw(tb *pucorarate.TokenBucket) EndpointMw {
 	return func(next gin.HandlerFunc) gin.HandlerFunc {
 		return func(c *gin.Context) {
 			if !tb.Allow() {
-				c.AbortWithError(503, veloneticsrate.ErrLimited)
+				c.AbortWithError(503, pucorarate.ErrLimited)
 				return
 			}
 			next(c)
@@ -110,8 +110,8 @@ func NewEndpointRateLimiterMw(tb *veloneticsrate.TokenBucket) EndpointMw {
 //
 // Deprecated: Use NewHeaderLimiterMwFromCfg instead
 func NewHeaderLimiterMw(header string, maxRate float64, capacity uint64) EndpointMw {
-	return NewTokenLimiterMw(HeaderTokenExtractor(header), veloneticsrate.NewLimiterStore(maxRate, int(capacity),
-		veloneticsrate.DefaultShardedMemoryBackend(context.Background())))
+	return NewTokenLimiterMw(HeaderTokenExtractor(header), pucorarate.NewLimiterStore(maxRate, int(capacity),
+		pucorarate.DefaultShardedMemoryBackend(context.Background())))
 }
 
 // NewHeaderLimiterMwFromCfg creates a token ratelimiter using the value of a header as a token
@@ -123,8 +123,8 @@ func NewHeaderLimiterMwFromCfg(cfg router.Config) EndpointMw {
 
 // NewIpLimiterMw creates a token ratelimiter using the IP of the request as a token
 func NewIpLimiterMw(maxRate float64, capacity uint64) EndpointMw {
-	return NewTokenLimiterMw(IPTokenExtractor, veloneticsrate.NewLimiterStore(maxRate, int(capacity),
-		veloneticsrate.DefaultShardedMemoryBackend(context.Background())))
+	return NewTokenLimiterMw(IPTokenExtractor, pucorarate.NewLimiterStore(maxRate, int(capacity),
+		pucorarate.DefaultShardedMemoryBackend(context.Background())))
 }
 
 // NewIpLimiterWithKeyMw creates a token ratelimiter using the IP of the request as a token
@@ -132,8 +132,8 @@ func NewIpLimiterMw(maxRate float64, capacity uint64) EndpointMw {
 // Deprecated: Use NewIpLimiterWithKeyMwFromCfg instead
 func NewIpLimiterWithKeyMw(header string, maxRate float64, capacity uint64) EndpointMw {
 	tokenExtractor := NewIPTokenExtractor(header)
-	return NewTokenLimiterMw(tokenExtractor, veloneticsrate.NewLimiterStore(maxRate, int(capacity),
-		veloneticsrate.DefaultShardedMemoryBackend(context.Background())))
+	return NewTokenLimiterMw(tokenExtractor, pucorarate.NewLimiterStore(maxRate, int(capacity),
+		pucorarate.DefaultShardedMemoryBackend(context.Background())))
 }
 
 // NewIpLimiterWithKeyMwFromCfg creates a token ratelimiter using the IP of the request as a token
@@ -144,16 +144,16 @@ func NewIpLimiterWithKeyMwFromCfg(cfg router.Config) EndpointMw {
 }
 
 // NewTokenLimiterMw returns a token based ratelimiting endpoint middleware with the received TokenExtractor and LimiterStore
-func NewTokenLimiterMw(tokenExtractor TokenExtractor, limiterStore veloneticsrate.LimiterStore) EndpointMw {
+func NewTokenLimiterMw(tokenExtractor TokenExtractor, limiterStore pucorarate.LimiterStore) EndpointMw {
 	return func(next gin.HandlerFunc) gin.HandlerFunc {
 		return func(c *gin.Context) {
 			tokenKey := tokenExtractor(c)
 			if tokenKey == "" {
-				c.AbortWithError(http.StatusTooManyRequests, veloneticsrate.ErrLimited)
+				c.AbortWithError(http.StatusTooManyRequests, pucorarate.ErrLimited)
 				return
 			}
 			if !limiterStore(tokenKey).Allow() {
-				c.AbortWithError(http.StatusTooManyRequests, veloneticsrate.ErrLimited)
+				c.AbortWithError(http.StatusTooManyRequests, pucorarate.ErrLimited)
 				return
 			}
 			next(c)

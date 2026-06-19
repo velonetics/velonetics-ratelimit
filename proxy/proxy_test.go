@@ -5,7 +5,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	veloneticsrate "github.com/pucora/velonetics-ratelimit/v3"
+	pucorarate "github.com/pucora/pucora-ratelimit/v3"
 	"github.com/pucora/lura/v2/config"
 	"github.com/pucora/lura/v2/logging"
 	"github.com/pucora/lura/v2/proxy"
@@ -121,7 +121,7 @@ func TestNewMiddleware_ko(t *testing.T) {
 	}
 
 	r, err := p(context.Background(), &request)
-	if err != veloneticsrate.ErrLimited {
+	if err != pucorarate.ErrLimited {
 		t.Errorf("error expected")
 	}
 	if nil != r {

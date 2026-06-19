@@ -3,26 +3,26 @@ package router
 import (
 	"context"
 
-	veloneticsrate "github.com/pucora/velonetics-ratelimit/v3"
+	pucorarate "github.com/pucora/pucora-ratelimit/v3"
 )
 
-func StoreFromCfg(cfg Config) veloneticsrate.LimiterStore {
+func StoreFromCfg(cfg Config) pucorarate.LimiterStore {
 	ctx := context.Background()
-	var storeBackend veloneticsrate.Backend
+	var storeBackend pucorarate.Backend
 	if cfg.NumShards > 1 {
-		storeBackend = veloneticsrate.NewShardedBackend(
+		storeBackend = pucorarate.NewShardedBackend(
 			ctx,
 			cfg.NumShards,
 			cfg.TTL,
 			cfg.CleanUpPeriod,
 			1,
-			veloneticsrate.PseudoFNV64a,
-			veloneticsrate.MemoryBackendBuilder,
+			pucorarate.PseudoFNV64a,
+			pucorarate.MemoryBackendBuilder,
 		)
 	} else {
-		storeBackend = veloneticsrate.MemoryBackendBuilder(ctx, cfg.TTL, cfg.CleanUpPeriod, 1, 1)[0]
+		storeBackend = pucorarate.MemoryBackendBuilder(ctx, cfg.TTL, cfg.CleanUpPeriod, 1, 1)[0]
 	}
 
-	return veloneticsrate.NewLimiterStore(cfg.ClientMaxRate, int(cfg.ClientCapacity),
+	return pucorarate.NewLimiterStore(cfg.ClientMaxRate, int(cfg.ClientCapacity),
 		storeBackend)
 }

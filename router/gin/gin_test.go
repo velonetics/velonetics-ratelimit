@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pucora/velonetics-ratelimit/v3/router"
+	"github.com/pucora/pucora-ratelimit/v3/router"
 	"github.com/pucora/lura/v2/config"
 	"github.com/pucora/lura/v2/proxy"
 )
