@@ -1,10 +1,10 @@
-module github.com/velonetics/velonetics-ratelimit/v3
+module github.com/pucora/velonetics-ratelimit/v3
 
 go 1.24.0
 
 require (
 	github.com/gin-gonic/gin v1.9.1
-	github.com/velonetics/lura/v2 v2.0.0
+	github.com/pucora/lura/v2 v2.0.0
 )
 
 require (
@@ -21,7 +21,7 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.9 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
-	github.com/velonetics/flatmap v1.0.0 // indirect
+	github.com/pucora/flatmap v1.0.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect

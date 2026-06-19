@@ -3,7 +3,7 @@ package router
 import (
 	"context"
 
-	veloneticsrate "github.com/velonetics/velonetics-ratelimit/v3"
+	veloneticsrate "github.com/pucora/velonetics-ratelimit/v3"
 )
 
 func StoreFromCfg(cfg Config) veloneticsrate.LimiterStore {

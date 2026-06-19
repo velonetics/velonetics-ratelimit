@@ -6,16 +6,16 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/velonetics/lura/v2/config"
-	"github.com/velonetics/lura/v2/logging"
-	"github.com/velonetics/lura/v2/proxy"
-	veloneticsgin "github.com/velonetics/lura/v2/router/gin"
+	"github.com/pucora/lura/v2/config"
+	"github.com/pucora/lura/v2/logging"
+	"github.com/pucora/lura/v2/proxy"
+	veloneticsgin "github.com/pucora/lura/v2/router/gin"
 
-	veloneticsrate "github.com/velonetics/velonetics-ratelimit/v3"
-	"github.com/velonetics/velonetics-ratelimit/v3/router"
+	veloneticsrate "github.com/pucora/velonetics-ratelimit/v3"
+	"github.com/pucora/velonetics-ratelimit/v3/router"
 )
 
-// HandlerFactory is the out-of-the-box basic ratelimit handler factory using the default velonetics endpoint
+// HandlerFactory is the out-of-the-box basic ratelimit handler factory using the default pucora endpoint
 // handler for the gin router
 var HandlerFactory = NewRateLimiterMw(logging.NoOp, veloneticsgin.EndpointHandler)
 

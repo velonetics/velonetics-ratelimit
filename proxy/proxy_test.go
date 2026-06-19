@@ -5,10 +5,10 @@ import (
 	"sync/atomic"
 	"testing"
 
-	veloneticsrate "github.com/velonetics/velonetics-ratelimit/v3"
-	"github.com/velonetics/lura/v2/config"
-	"github.com/velonetics/lura/v2/logging"
-	"github.com/velonetics/lura/v2/proxy"
+	veloneticsrate "github.com/pucora/velonetics-ratelimit/v3"
+	"github.com/pucora/lura/v2/config"
+	"github.com/pucora/lura/v2/logging"
+	"github.com/pucora/lura/v2/proxy"
 )
 
 /*

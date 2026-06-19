@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/velonetics/velonetics-ratelimit/v3/router"
+	"github.com/pucora/velonetics-ratelimit/v3/router"
 )
 
 var ErrNotFound = errors.New("not found")

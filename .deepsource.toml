@@ -5,7 +5,7 @@ name = "go"
 enabled = true
 
   [analyzers.meta]
-  import_root = "github.com/velonetics/velonetics-ratelimit"
+  import_root = "github.com/pucora/velonetics-ratelimit"
 
 [[transformers]]
 name = "gofmt"

@@ -6,7 +6,7 @@ Sample backend extra config
 	...
 	"extra_config": {
 		...
-		"github.com/velonetics/velonetics-ratelimit/rate/proxy": {
+		"github.com/pucora/velonetics-ratelimit/rate/proxy": {
 			"max_rate": 100,
 			"capacity": 100
 		},
@@ -16,7 +16,7 @@ Sample backend extra config
 
 Adding the middleware to your proxy stack
 
-	import ratelimitproxy "github.com/velonetics/velonetics-ratelimit/v3/proxy"
+	import ratelimitproxy "github.com/pucora/velonetics-ratelimit/v3/proxy"
 
 	...
 
@@ -39,11 +39,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/velonetics/lura/v2/config"
-	"github.com/velonetics/lura/v2/logging"
-	"github.com/velonetics/lura/v2/proxy"
+	"github.com/pucora/lura/v2/config"
+	"github.com/pucora/lura/v2/logging"
+	"github.com/pucora/lura/v2/proxy"
 
-	veloneticsrate "github.com/velonetics/velonetics-ratelimit/v3"
+	veloneticsrate "github.com/pucora/velonetics-ratelimit/v3"
 )
 
 // Namespace is the key to use to store and access the custom config data for the proxy

@@ -11,8 +11,8 @@ import (
 	"math/rand"
 	"time"
 
-	veloneticsrate "github.com/velonetics/velonetics-ratelimit/v3"
-	"github.com/velonetics/lura/v2/config"
+	veloneticsrate "github.com/pucora/velonetics-ratelimit/v3"
+	"github.com/pucora/lura/v2/config"
 )
 
 // Namespace is the key to use to store and access the custom config data for the router

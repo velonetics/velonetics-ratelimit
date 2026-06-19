@@ -8,9 +8,9 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/velonetics/velonetics-ratelimit/v3/router"
-	"github.com/velonetics/lura/v2/config"
-	"github.com/velonetics/lura/v2/proxy"
+	"github.com/pucora/velonetics-ratelimit/v3/router"
+	"github.com/pucora/lura/v2/config"
+	"github.com/pucora/lura/v2/proxy"
 )
 
 func TestNewRateLimiterMw_CustomHeaderIP(t *testing.T) {
